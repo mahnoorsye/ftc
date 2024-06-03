@@ -1,0 +1,61 @@
+package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+@Autonomous(name="Shanza6_2Trial", group="Linear OpMode")
+
+
+
+public class Shanza6_2Trial extends LinearOpMode {
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor frontleft = null;
+    private DcMotor frontright = null;
+    private DcMotor backleft = null;
+    private DcMotor backright = null;
+    @Override
+    
+    public void runOpMode() {
+    // the actual stuff starts here
+    
+        frontleft  = hardwareMap.get(DcMotor.class, "lb");
+        frontright = hardwareMap.get(DcMotor.class, "rb");
+        //backleft = hardwareMap.get(DcMotor.class, "backleft");
+        //backright = hardwareMap.get(DcMotor.class, "backright");
+        
+        frontright.setDirection(DcMotor.Direction.REVERSE);
+        //backright.setDirection(DcMotor.Direction.REVERSE); 
+
+        waitForStart();
+        runtime.reset();
+
+
+            frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontleft.setTargetPosition(1000);
+            frontright.setTargetPosition(1000);
+            frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontleft.setPower(0.5);
+            frontright.setPower(0.5);
+            /*
+            frontleft.setTargetPosition(-1000);
+            frontright.setTargetPosition(-1000);
+            frontleft.setPower(-0.5);
+            frontright.setPower(-0.5);
+            */
+        
+         while (opModeIsActive() && frontleft.isBusy() && frontright.isBusy()) {
+            telemetry.addData("encoder-fwd-left", frontleft.getCurrentPosition());
+            telemetry.addData("encoder-fwd-right", frontright.getCurrentPosition());
+            telemetry.update();
+            idle();
+       }
+ frontleft.setPower(0);
+ frontright.setPower(0);
+
+    }
+}
