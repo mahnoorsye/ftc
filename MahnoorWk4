@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-@Autonomous(name="Shanza6_2Trial", group="Linear OpMode")
+@Autonomous(name="MahnoorAli", group="Linear OpMode")
 
 
 
-public class Shanza6_2Trial extends LinearOpMode {
+public class MahnoorAli extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontleft = null;
     private DcMotor frontright = null;
