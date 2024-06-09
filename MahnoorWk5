@@ -1,0 +1,35 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+@TeleOp(name = "MahnoorAndShanza_Wk5")
+
+public class MahnoorAndShanza_Wk5 extends LinearOpMode {
+
+Servo armServo = null;
+
+    @Override
+    public void runOpMode() {
+        armServo = hardwareMap.get(Servo.class, "hookR");
+        waitForStart();
+
+        while (opModeIsActive()) {
+            if (gamepad1.y){
+                armServo.setPosition(0);
+            } else if (gamepad1.b){
+                armServo.setPosition(0.5);
+            } else if(gamepad1.x){
+                armServo.setPosition(0.5);
+            } else if(gamepad1.a){
+                armServo.setPosition(1);
+            }
+        }
+    }
+}
+
