@@ -1,0 +1,52 @@
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+import java.util.Scanner;
+
+class HelloWorld {
+    public static void main(String[] args) {
+
+
+        while(true){
+        System.out.println("Enter radius here: ");
+        Scanner sc = new Scanner(System.in);
+
+        if (!sc.hasNextInt()){
+            System.out.println("invalid input");
+            continue;
+        }
+        double radius = sc.nextDouble();
+        
+        if (radius == 0){
+            break;
+        }
+        final double PI = 3.14;
+        double diameter = radius * 2;
+        double area = PI * radius * radius;
+        double circumference = 2 * PI * radius;
+        
+        
+        showRadius(radius);
+        showDiameter(diameter);
+        showArea(area);
+        showCircum(circumference);
+        }
+        
+    }
+    
+    public static void showRadius(double r) {
+        System.out.println("Radius: " + r);
+    }
+    
+    public static void showDiameter(double d) {
+        System.out.println("Diameter: " + d);
+    }
+    
+    public static void showArea(double a) {
+        System.out.println("Area: " + a);
+    }
+    
+    public static void showCircum(double c) {
+        System.out.println("Circumference: " + c);
+    
+    }
+}
