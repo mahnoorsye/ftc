@@ -1,0 +1,65 @@
+//javascript:void(0)package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+
+
+@TeleOp
+
+public class MahnoorMariamwk7 extends LinearOpMode {
+    double Kp = 0.1;
+ 
+private DcMotor motorLeft;
+private DcMotor motorRight;
+private DcMotor frontRight;
+private DcMotor frontLeft;
+
+
+    @Override
+    public void runOpMode() {
+        
+    motorLeft  = hardwareMap.get(DcMotor.class, "motorLeft");
+    motorRight = hardwareMap.get(DcMotor.class, "motorRight");
+    frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+    frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+
+
+        double target = 100;
+        double currentPosition = 0;
+         waitForStart();
+
+        while (opModeIsActive()) {
+      double power = PIDController(target, currentPosition);
+
+        motorLeft.setPower(power);
+        motorRight.setPower(power);
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+     
+
+        }
+    }
+
+    public double PIDController(double target, double currentPosition ){
+
+            double error = target - currentPosition;
+
+            //Kp is proportion constant
+            // multiplying Kp by the error and storing that into errror as its new value
+
+            error *= Kp;
+          
+            return error; 
+   
+   
+   
+   
+   
+   
+    }
+}
