@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MahnoorMariamwk7 extends LinearOpMode {
     double Kp = 0.1;
+    double IntegralSum = 0;
  
 private DcMotor motorLeft;
 private DcMotor motorRight;
@@ -31,7 +32,9 @@ private DcMotor frontLeft;
 
         double target = 100;
         double currentPosition = 0;
-         waitForStart();
+        waitForStart();
+
+        ElapsedTime  myTimer = new ElapsedTime();
 
         while (opModeIsActive()) {
       double power = PIDController(target, currentPosition);
@@ -47,19 +50,20 @@ private DcMotor frontLeft;
 
     public double PIDController(double target, double currentPosition ){
 
-            double error = target - currentPosition;
+            
+
+            double ProportionError = target - currentPosition;
 
             //Kp is proportion constant
-            // multiplying Kp by the error and storing that into errror as its new value
+            //multiplying Kp by the error and storing that into errror as its new value
 
-            error *= Kp;
-          
+            ProportionError *= Kp;
+            double error = ProportionError + IntegralSum;
+
+
             return error; 
    
-   
-   
-   
-   
-   
     }
+
+
 }
