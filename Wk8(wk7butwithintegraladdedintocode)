@@ -12,9 +12,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp
 
 public class MahnoorMariamwk7 extends LinearOpMode {
-    double Kp = 0.1;
+    double Kp = 0.5;
+    double Ki = 0.5;
+    double Kd = 0.5;
     double IntegralSum = 0;
- 
+    double TotalTime = 15;
+    double PreviousError = 0;
+    
+    //Integral time is actually Interval time
+
 private DcMotor motorLeft;
 private DcMotor motorRight;
 private DcMotor frontRight;
@@ -47,20 +53,28 @@ private DcMotor frontLeft;
 
         }
     }
-
-    public double PIDController(double target, double currentPosition ){
+      
+    public double PIDController(double target, double Current ){
 
             
-
-            double ProportionError = target - currentPosition;
-
+            //PROPORTION
+            double ProportionError = target - Current;
+            ProportionError *= Kp;
             //Kp is proportion constant
             //multiplying Kp by the error and storing that into errror as its new value
 
-            ProportionError *= Kp;
-            double error = ProportionError + IntegralSum;
+            //INTEGRAL
+            IntegralSum = ProportionError * myTimer.time(); //area of one single rectangle
+            //prop error is the height of the rectangle
+            // interval time is the base of rectangle
 
+            //DERIVATIVE
+            double Derivative = (PreviousError - Current) / myTimer.time();
+            PreviousError = CurrentError;
+            myTimer.reset();
 
+            //ERROR
+            double error = (ProportionError * Kp) + (IntegralSum * Ki) + (Derivative * Kd);
             return error; 
    
     }
