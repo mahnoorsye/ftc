@@ -1,0 +1,139 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+//below for apriltag
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import java.util.List;
+
+
+@Autonomous
+
+public class MahnoorPIDwIMU extends LinearOpMode {
+    double Kp = 0.5;
+    double Ki = 0.5;
+    double Kd = 0.5;
+    double IntegralSum = 0;
+    double TotalTime = 15;
+    double PreviousError = 0;
+
+    
+    //Integral time is actually Interval time
+
+private DcMotor motorLeft;
+private DcMotor motorRight;
+private DcMotor frontRight;
+private DcMotor frontLeft;
+private BNO055IMU IMU;
+
+
+
+    @Override
+    public void runOpMode() {
+        
+    motorLeft  = hardwareMap.get(DcMotor.class, "motorLeft");
+    motorRight = hardwareMap.get(DcMotor.class, "motorRight");
+    frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+    frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+    IMU = hardwareMap.get(BNO055IMU.class,"IMU");
+    
+          //specifying orientation of robot
+          BNO055IMU.Parameters parameters = new BNO055IMU.Parameters(new RevHubOrientationOnRobot(
+          RevHubOrientationOnRobot.LogoFacingDirection.UP,
+          RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+          
+          //initialization, going to be initialized using these parameters
+          parameters.mode = BNO055IMU.SensorMode.IMU;
+          parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+          IMU.initialize(parameters);//this line initializes the imu with those parameters specified above
+          
+          
+          //now use these methods to extract each angle'
+          //(Java type double) from the object you just created:
+          double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+
+        double target = 100;
+        double currentPosition = 0;
+        waitForStart();
+
+        ElapsedTime  myTimer = new ElapsedTime();
+        
+        Orientation myRobotOrientation;
+
+
+        while (opModeIsActive()) {
+            //get robo orientation
+            myRobotOrientation = IMU.getRobotOrientation(
+              AxesReference.INTRINSIC,
+              AxesOrder.XYZ,
+              AngleUnit.DEGREES);
+            
+          //now use these methods to extract each angle'
+          //(Java type double) from the object you just created:
+          double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+          double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+          double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);
+          telemetry.addData("imu yaw: ", Yaw);
+          telemetry.addData("imu pitch: ", Pitch);
+          telemetry.addData("imu roll: ", Roll);
+          telemetry.Update();
+          
+      double power = PIDController(target, currentPosition);
+
+        
+
+        motorLeft.setPower(power);
+        motorRight.setPower(power);
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+     
+
+        }
+    }
+      
+    public double PIDController(double target, double Current ){
+
+            
+            //PROPORTION
+            double ProportionError = target - Current;
+            ProportionError *= Kp;
+            //Kp is proportion constant
+            //multiplying Kp by the error and storing that into errror as its new value
+
+            //INTEGRAL
+            IntegralSum = ProportionError * myTimer.time(); //area of one single rectangle
+            //prop error is the height of the rectangle
+            // interval time is the base of rectangle
+            // integral sum is a history of all the errors
+
+            //DERIVATIVE
+            double Derivative = (PreviousError - Current) / myTimer.time();
+            PreviousError = CurrentError;
+            myTimer.reset();
+
+            //ERROR
+            double error = (ProportionError * Kp) + (IntegralSum * Ki) + (Derivative * Kd);
+            return error; 
+   
+    }
+
+
+}
