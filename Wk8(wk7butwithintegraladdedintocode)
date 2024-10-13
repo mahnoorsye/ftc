@@ -67,6 +67,7 @@ private DcMotor frontLeft;
             IntegralSum = ProportionError * myTimer.time(); //area of one single rectangle
             //prop error is the height of the rectangle
             // interval time is the base of rectangle
+            // integral sum is a history of all the errors
 
             //DERIVATIVE
             double Derivative = (PreviousError - Current) / myTimer.time();
