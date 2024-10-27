@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+/*
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import static com.qualcomm.hardware.rev.RevHubOrientationOnRobot.xyzOrientation;
+*/
+
+package org.firstinspires.ftc.robotcontroller.external.samples;
+
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name = "Sensor: IMU Non-Orthogonal", group = "Sensor")
 
@@ -58,6 +71,17 @@ public class MahnoorIMU extends LinearOpMode
         frontLeft.setPower(power);
         frontRight.setPower(power);
         }
+//DOESTHISGOHERE??????------------------------------------------------
+        public double angleWrap(double radians) {
+        while (radians > Math.PI) {
+            radians -= 2 * Math.PI;
+            } 
+        while (radians < -Math.PI) {
+            radians += 2 * Math.PI;
+            }
+        return radians;
+        }
+        //you can also use degrees instead of radians but ill just use radians cuz idk this code
 
         Orientation hubRotation = xyzOrientation(xRotation, yRotation, zRotation);
 
