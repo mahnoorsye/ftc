@@ -55,7 +55,7 @@ public class MahnoorIMU extends LinearOpMode
         //initialize new object we made
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
-while (runOpModeIsActive) {
+while (opModeIsActive()) {
 
             telemetry.addData("Hub orientation", "Logo=%s   USB=%s\n ", logoDirection, usbDirection);
 
@@ -151,7 +151,7 @@ public double angleWrap(double radians) {
 
             //DERIVATIVE
             double Derivative = (PreviousError - Current) / myTimer.time();
-            PreviousError = CurrentError;
+            PreviousError = ProportionError;
             myTimer.reset();
 
             //ERROR
