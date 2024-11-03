@@ -1,0 +1,58 @@
+package org.firstinspires.ftc.teamcode.bakar;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@TeleOp (name="MahnoorNov3", group="Linear OpMode")
+
+public class MahnoorNov3 extends LinearOpMode{
+
+    private DcMotor frontleft;
+    private DcMotor frontright;
+    private DcMotor midleft;
+    private DcMotor midright;
+    
+    @Override
+    public void runOpMode() {
+
+        frontleft  = hardwareMap.get(DcMotor.class, "frontleft");
+        frontright  = hardwareMap.get(DcMotor.class, "frontright");
+        midleft  = hardwareMap.get(DcMotor.class, "midleft");
+        midright  = hardwareMap.get(DcMotor.class, "midright");
+        
+        //frontleft.setDirection(DcMotor.Direction.REVERSE);
+        waitForStart();
+
+        while (opModeIsActive()) {
+            double frontleftPower;
+            double frontrightPower;
+            double midleftPower;
+            double midrightPower;
+            
+            double drive;
+            double strafe;
+            double turn;
+            
+            drive = -gamepad1.left_stick_y;
+            //drive will be positive y values up and down
+            strafe = gamepad1.right_stick_x;
+            //strafe is right stick x values (left and right)
+            turn = gamepad1.right_stick_y;
+            //turn is right stick positive y values (up and down)
+
+            frontrightPower = ( drive + turn);
+            frontleftPower = ( drive - turn);
+            midleftPower = (strafe);
+            midrightPower = (strafe);
+            
+            frontleft.setPower(frontleftPower);
+            frontright.setPower(frontrightPower);
+            midleft.setPower(midleftPower);
+            midright.setPower(midrightPower);
+            
+            
+        
+        }
+    }
+}
