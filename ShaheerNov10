@@ -1,0 +1,44 @@
+package org.firstinspires.ftc.teamcode.bakar;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@Autonomous
+
+public class ShaheerNov10 extends LinearOpMode {
+    
+    //Declaration
+    private DcMotor frontright;
+    private DcMotor frontleft;
+    private DcMotor backright;
+    //private is the class type
+    //dcmotor males it a motor
+    // backright is the name of the motor
+    private DcMotor backleft;
+    
+    public void runOpMode(){
+    // run opmode is a method
+    //within this method you put the initialization which is the hardwarwe map
+          
+        frontright = hardwareMap.get(DcMotor.class,"frontright"); 
+        frontleft = hardwareMap.get(DcMotor.class,"frontleft"); 
+        backright = hardwareMap.get(DcMotor.class,"backright"); 
+        backleft = hardwareMap.get(DcMotor.class,"backleft"); 
+        
+        //this is setting the directions of each motor
+        frontright.setDirection(DcMotor.Direction.FORWARD);
+        frontleft.setDirection(DcMotor.Direction.FORWARD);
+        backright.setDirection(DcMotor.Direction.REVERSE);
+        backleft.setDirection(DcMotor.Direction.REVERSE);
+        
+    waitForStart();
+    
+    while (opModeIsActive()){
+        frontright.setPower(0.75);
+        frontleft.setPower(0.75);
+        backright.setPower(0);
+        backleft.setPower(0);
+        }
+    }
+}
