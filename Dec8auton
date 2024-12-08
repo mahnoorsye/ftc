@@ -1,0 +1,25 @@
+package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+@Autonomous(name="Dec8auton", group="Linear OpMode")
+
+
+
+public class Dec8auton extends LinearOpMode {
+    private DcMotor frontleft;
+    private DcMotor frontright; 
+    private DcMotor backleft;
+    private DcMotor backright; 
+    @Override
+    
+    public void runOpMode() {
+    
+        frontleft  = hardwareMap.get(DcMotor.class, "frontleft");
+        frontright = hardwareMap.get(DcMotor.class, "frontright");
+        backleft  = hardwareMap.get(DcMotor.class, "backleft");
+        backright = hardwareMap.get(DcMotor.class, "backright");
+
+        //frontright.setDirection(DcMotor.Direction.REVERSE);
+
+        waitForStart();
