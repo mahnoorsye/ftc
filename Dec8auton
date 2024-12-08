@@ -19,7 +19,30 @@ public class Dec8auton extends LinearOpMode {
         frontright = hardwareMap.get(DcMotor.class, "frontright");
         backleft  = hardwareMap.get(DcMotor.class, "backleft");
         backright = hardwareMap.get(DcMotor.class, "backright");
-
         //frontright.setDirection(DcMotor.Direction.REVERSE);
+            
+            
+        frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        
+        int diameter = 4;
+        int Ticks = 500;
+        double circumference = Math.PI * diameter;
+        double rotationsNeeded = 7/circumference;
+        int ticksNeeded = (int) (rotationsNeeded * Ticks);
 
-        waitForStart();
+//do steps 3,4,5,6, 7
+1.Figure out number of ticks
+2.Reset encoders (resets ticks to 0)
+3. Set target position
+4. Set power to motor
+5. Set RUN_TO_POSITION
+6. Wait for (use while loop)(to see if motor is busy and if you can do smth with it) isBusy() 
+7. Stop motors
+One full rotation is the circumference so distanc you need to travel divided by circumference is how many rotations you need.
+
+        
+    }
+}
