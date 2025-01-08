@@ -1,0 +1,121 @@
+ package org.firstinspires.ftc.teamcode;
+ 
+ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+ import com.qualcomm.robotcore.hardware.DcMotor;
+ import com.qualcomm.robotcore.hardware.DcMotorSimple;
+ import com.qualcomm.robotcore.hardware.Gamepad;
+ @TeleOp
+ public class ItkanStars extends LinearOpMode {
+    double Kp = 0.5;
+    double Ki = 0.5;
+    double Kd = 0.5;
+    double IntegralSum = 0;
+    double TotalTime = 15;
+    double PreviousError = 0;
+    ElapsedTime  myTimer = new ElapsedTime();
+ 
+  
+     @Override
+     public void runOpMode() throws InterruptedException {
+      
+        //  Declare our motors and servos
+         DcMotor fl = hardwareMap.dcMotor.get("fl");
+         DcMotor bl = hardwareMap.dcMotor.get("bl");
+         DcMotor fr = hardwareMap.dcMotor.get("fr");
+         DcMotor br = hardwareMap.dcMotor.get("br");
+         DcMotor arm = hardwareMap.dcMotor.get("arm");
+ 
+ 
+        double target = 100;
+        double currentPosition = 0;
+        waitForStart();
+
+ fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+ bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+ fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+ fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+ 
+        // Change the directions as needed.
+         // Use the Gobilda mechanum wheel chart for help on this
+         fl.setDirection(DcMotorSimple.Direction.FORWARD);
+         bl.setDirection(DcMotorSimple.Direction.FORWARD);
+         fr.setDirection(DcMotorSimple.Direction.REVERSE);
+         br.setDirection(DcMotorSimple.Direction.REVERSE);
+         
+         waitForStart();
+         
+
+         
+  while (opModeIsActive()){
+         
+       double power = PIDController(target, currentPosition);
+
+         double y = -gamepad1.left_stick_y;
+             double x = gamepad1.left_stick_x;  
+             // Counteract imperfect strafing
+             double rx = gamepad1.right_stick_x;
+                      
+
+ 
+              /* Denominator is the largest motor power (absolute value) or 1
+              This ensures all the powers maintain the same ratio,
+              but only if at least one is out of the range [-1, 1]
+              */
+             double denom = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+             double flPower = (y + x + rx) / denom;
+             double blPower = (y - x + rx) / denom;
+             double frPower = (y - x - rx) / denom;
+             double brPower = (y + x - rx) / denom;
+             double armpower = (gamepad2.left_trigger - gamepad2.right_trigger);
+ 
+         // if (isStopRequested()) return;
+ 
+
+             fl.setPower(flPower);
+             bl.setPower(blPower);
+             fr.setPower(frPower);
+             br.setPower(brPower);
+             arm.setPower(armpower);
+         
+         
+     }
+     }
+       public double PIDController(double target, double Current ){
+
+            
+            //PROPORTION
+            double ProportionError = angleWrap(target - Current);
+            ProportionError *= Kp;
+            //Kp is proportion constant
+            //multiplying Kp by the error and storing that into errror as its new value
+
+            //INTEGRAL
+            IntegralSum = ProportionError * myTimer.time(); //area of one single rectangle
+            //prop error is the height of the rectangle
+            // interval time is the base of rectangle
+            // integral sum is a history of all the errors
+
+            //DERIVATIVE
+            double Derivative = (PreviousError - Current) / myTimer.time();
+            PreviousError = ProportionError;
+            myTimer.reset();
+
+            //ERROR
+            double error = (ProportionError * Kp) + (IntegralSum * Ki) + (Derivative * Kd);
+            return error; 
+  
+     }
+     
+     public double angleWrap(double radians) {
+        while (radians > Math.PI) {
+            radians -= 2 * Math.PI;
+            } 
+        while (radians < -Math.PI) {
+            radians += 2 * Math.PI;
+            }
+        return radians;
+        }
+ }
+ 
