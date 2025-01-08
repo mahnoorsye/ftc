@@ -1,0 +1,25 @@
+  public double PIDController(double target, double Current ){
+
+            
+            //PROPORTION
+            double ProportionError = target - Current;
+            ProportionError *= Kp;
+            //Kp is proportion constant
+            //multiplying Kp by the error and storing that into errror as its new value
+
+            //INTEGRAL
+            IntegralSum = ProportionError * myTimer.time(); //area of one single rectangle
+            //prop error is the height of the rectangle
+            // interval time is the base of rectangle
+            // integral sum is a history of all the errors
+
+            //DERIVATIVE
+            double Derivative = (PreviousError - Current) / myTimer.time();
+            PreviousError = ProportionError;
+            myTimer.reset();
+
+            //ERROR
+            double error = (ProportionError * Kp) + (IntegralSum * Ki) + (Derivative * Kd);
+            return error; 
+   
+    }
