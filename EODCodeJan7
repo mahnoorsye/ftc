@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  import com.qualcomm.robotcore.hardware.DcMotor;
  import com.qualcomm.robotcore.hardware.DcMotorSimple;
  import com.qualcomm.robotcore.hardware.Gamepad;
+
  @TeleOp
+
  public class ItkanStars extends LinearOpMode {
     double Kp = 0.5;
     double Ki = 0.5;
@@ -16,7 +18,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
     double PreviousError = 0;
     ElapsedTime  myTimer = new ElapsedTime();
  
-  
+int armPosition = 0;
+
      @Override
      public void runOpMode() throws InterruptedException {
       
@@ -46,23 +49,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
          
          waitForStart();
          
-
-         
   while (opModeIsActive()){
-         
-       double power = PIDController(target, currentPosition);
+         double armTargetPosition = 
 
          double y = -gamepad1.left_stick_y;
              double x = gamepad1.left_stick_x;  
              // Counteract imperfect strafing
              double rx = gamepad1.right_stick_x;
                       
+arm.getCurrebtPosition
+//check in onbot java if this work or how code line should be
 
+if (gamepad2.left_trigger.PRESSED){
+//arm.getPosition
+//add 1 tick to that value
+//save the new value into the arm target position variable
+}
  
               /* Denominator is the largest motor power (absolute value) or 1
               This ensures all the powers maintain the same ratio,
               but only if at least one is out of the range [-1, 1]
               */
+
              double denom = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
              double flPower = (y + x + rx) / denom;
              double blPower = (y - x + rx) / denom;
@@ -72,6 +80,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  
          // if (isStopRequested()) return;
  
+       double power = PIDController(target, currentPosition);
 
              fl.setPower(flPower);
              bl.setPower(blPower);
